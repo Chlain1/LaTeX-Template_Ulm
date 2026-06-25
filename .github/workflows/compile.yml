@@ -1,0 +1,31 @@
+name: Build LaTeX document
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+      - name: List TeX files
+        id: list_tex
+        run: |
+          set -euo pipefail
+          # Find all .tex files under blaetter (recursively)
+          # Exclude common auxiliary or partial files (starting with _ or .) if desired
+          FILES=$(find blaetter -type f -name '*.tex' ! -name '.*' ! -name '_*' -print | sort)
+          echo "Discovered .tex files:" >&2
+          echo "$FILES" >&2
+          # Export as multiline output for latex-action
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          printf '%s\n' $FILES >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: ${{ steps.list_tex.outputs.files }}
+          work_in_root_file_dir: true
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v4
+        with:
+          name: PDFs
+          path: blaetter/**/*.pdf
