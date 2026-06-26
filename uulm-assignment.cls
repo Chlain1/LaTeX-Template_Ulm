@@ -55,6 +55,9 @@
 \RequirePackage{svg}
 \RequirePackage{stmaryrd}
 
+% Sourcehandling
+\RequirePackage[backend = biber, citestyle=numeric, bibstyle=authortitle]{biblatex}
+
 \RequirePackage[ngerman, english]{babel}
 \RequirePackage{dirtytalk}
 
@@ -62,6 +65,7 @@
 
 \RequirePackage{graphicx}
 \RequirePackage{hyperref}
+\hypersetup{pdfborder=0 0 0}
 
 \definecolor{uulm}{RGB}{130,161,180}
 \definecolor{uulm-akzent}{rgb}{.663,.635,.553}
